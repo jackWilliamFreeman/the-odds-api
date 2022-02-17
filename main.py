@@ -58,8 +58,6 @@ else:
     games = get_odds_for_sessions(game_odds, odds_json)
     games = determine_winner(games)
 
-    print(games)
- 
     # Check the usage quota
     print('Remaining requests', odds_response.headers['x-requests-remaining'])
     print('Used requests', odds_response.headers['x-requests-used'])
