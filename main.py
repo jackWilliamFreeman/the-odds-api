@@ -1,5 +1,3 @@
-from audioop import avg
-from turtle import home
 import requests
 import os
 from methods import get_odds_for_sessions, determine_winner
