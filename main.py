@@ -35,13 +35,10 @@ if sports_response.status_code != 200:
 else:
     print('List of in season sports:', sports_response.json())
 
-global afl_obj
 for sport in sports_response.json():
     if sport['key'] == 'aussierules_afl':
         afl_obj = sport
         SPORT = afl_obj['key']
-
-print(afl_obj)
 
 odds_response = requests.get(
     f'https://api.the-odds-api.com/v4/sports/{SPORT}/odds',
