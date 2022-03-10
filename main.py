@@ -8,6 +8,7 @@ REGIONS = 'au'
 MARKETS = 'h2h' # h2h | spreads | totals. Multiple can be specified if comma delimited
 ODDS_FORMAT = 'decimal'
 DATE_FORMAT = 'iso' # iso | unix
+SPORTS_KEY = 'aussierules_afl'
 
 class game_odds:
     def __init__(self, home_team, away_team, game_date):
@@ -18,6 +19,7 @@ class game_odds:
         self.away_odds={} 
         self.home_avg_odds = 0
         self.away_avg_odds = 0
+        self.odds_spread = 0
         self.predicted_winner = ""    
 
 sports_response = requests.get(
@@ -34,7 +36,7 @@ else:
     print('List of in season sports:', sports_response.json())
 
 for sport in sports_response.json():
-    if sport['key'] == 'aussierules_afl':
+    if sport['key'] == SPORTS_KEY:
         afl_obj = sport
         SPORT = afl_obj['key']
 
@@ -57,6 +59,15 @@ else:
     print('Number of events:', len(odds_json))
     games = get_odds_for_sessions(game_odds, odds_json)
     games = determine_winner(games)
+    for game in games:
+        confidence = ''
+        if game.odds_spread > 1:
+            confidence = 'high'
+        if game.odds_spread >.5 and game.odds_spread <= 1:
+            confidence = 'medium'
+        if game.odds_spread <= .5:
+            confidence = "low"
+        print(f'game date: {game.game_date}, prediction: {game.predicted_winner}, confidence = {confidence}')
 
     # Check the usage quota
     print('Remaining requests', odds_response.headers['x-requests-remaining'])

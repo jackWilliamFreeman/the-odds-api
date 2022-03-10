@@ -24,6 +24,8 @@ def determine_winner(games):
 
         if game.away_avg_odds > game.home_avg_odds:
             game.predicted_winner = game.away_team
+            game.odds_spread = game.away_avg_odds - game.home_avg_odds
         else:
             game.predicted_winner = game.home_team
+            game.odds_spread = game.home_avg_odds - game.away_avg_odds
     return games
