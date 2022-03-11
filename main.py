@@ -20,7 +20,8 @@ class game_odds:
         self.home_avg_odds = 0
         self.away_avg_odds = 0
         self.odds_spread = 0
-        self.predicted_winner = ""    
+        self.predicted_winner = ""
+        self.predicted_loser = ""    
 
 sports_response = requests.get(
     'https://api.the-odds-api.com/v4/sports', 
@@ -31,9 +32,6 @@ sports_response = requests.get(
 
 if sports_response.status_code != 200:
     print(f'Failed to get sports: status_code {sports_response.status_code}, response body {sports_response.text}')
-
-else:
-    print('List of in season sports:', sports_response.json())
 
 for sport in sports_response.json():
     if sport['key'] == SPORTS_KEY:
@@ -67,7 +65,7 @@ else:
             confidence = 'medium'
         if game.odds_spread <= .5:
             confidence = "low"
-        print(f'game date: {game.game_date}, prediction: {game.predicted_winner}, confidence = {confidence}')
+        print(f'game date: {game.game_date}\r\n predicted winner: {game.predicted_winner}\r\n predicted loser: {game.predicted_loser}\r\n confidence = {confidence}\r\n')
 
     # Check the usage quota
     print('Remaining requests', odds_response.headers['x-requests-remaining'])
