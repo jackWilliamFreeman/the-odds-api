@@ -1,6 +1,7 @@
 import requests
 import os
-from methods import get_odds_for_sessions, determine_winner
+from methods import get_odds_for_sessions, determine_winner, print_winners
+from datetime import datetime
 
 API_KEY = os.getenv('KEY')
 SPORT = 'upcoming'
@@ -22,6 +23,8 @@ class game_odds:
         self.odds_spread = 0
         self.predicted_winner = ""
         self.predicted_loser = ""    
+        self.predicted_winner_odds = 0
+        self.predicted_loser_odds = 0
 
 sports_response = requests.get(
     'https://api.the-odds-api.com/v4/sports', 
@@ -54,20 +57,12 @@ if odds_response.status_code != 200:
 
 else:
     odds_json = odds_response.json()
-    print('Number of events:', len(odds_json))
+    print('--------------------------PREDICATIONS ARE BELOW PEASANTS-----------------------------------')
+    print('Number of games:', len(odds_json))
     games = get_odds_for_sessions(game_odds, odds_json)
     games = determine_winner(games)
-    for game in games:
-        confidence = ''
-        if game.odds_spread > 1:
-            confidence = 'high'
-        if game.odds_spread >.5 and game.odds_spread <= 1:
-            confidence = 'medium'
-        if game.odds_spread <= .5:
-            confidence = "low"
-        print(f'game date: {game.game_date}\r\n predicted winner: {game.predicted_winner}\r\n predicted loser: {game.predicted_loser}\r\n confidence = {confidence}\r\n')
+    print_winners(games)
 
     # Check the usage quota
     print('Remaining requests', odds_response.headers['x-requests-remaining'])
     print('Used requests', odds_response.headers['x-requests-used'])
-
