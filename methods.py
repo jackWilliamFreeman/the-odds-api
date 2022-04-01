@@ -47,6 +47,6 @@ def print_winners(games):
             confidence = "low"
         print(f'game date: {game.game_date}\
             \r\nbookies polled: {len(game.home_odds)}\
-            \r\npredicted winner: {game.predicted_winner} - ${game.predicted_winner_odds} \
+            \r\n-----------predicted winner: {game.predicted_winner} - ${game.predicted_winner_odds}--------- \
             \r\npredicted loser: {game.predicted_loser} - ${game.predicted_loser_odds} \
             \r\nconfidence = {confidence}\r\n')
